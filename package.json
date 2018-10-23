@@ -1,13 +1,14 @@
 {
-  "name": "node-js-getting-started",
-  "version": "0.3.0",
-  "description": "A sample Node.js app using Express 4",
+  "name": "ybi-test",
+  "version": "0.0.1",
+  "description": "A smart test",
   "engines": {
-    "node": "8.9.1"
+    "node": "10.12.0"
   },
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "heroku-postbuild": "cd frontend && yarn && yarn run build",
     "test": "node test.js"
   },
   "dependencies": {
@@ -20,7 +21,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/heroku/node-js-getting-started"
+    "url": "https://github.com/bbarreto/ybi-test"
   },
   "keywords": [
     "node",
