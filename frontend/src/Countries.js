@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Alert } from 'reactstrap'
 import Select from 'react-select'
 import CountryData from './CountryData'
-import runtimeEnv from '@mars/heroku-js-runtime-env'
 
 export default class Countries extends Component {
   constructor(props) {
@@ -18,8 +17,7 @@ export default class Countries extends Component {
   }
 
   componentDidMount() {
-    const env = runtimeEnv();
-    fetch(`${env.REACT_APP_API_ENDPOINT}/countries/getAll`)
+    fetch(`/api/countries/getAll`)
       .then(res => res.json())
       .then(allCountries => this.setState({ allCountries }))
       .catch(err => {

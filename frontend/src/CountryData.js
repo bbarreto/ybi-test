@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import runtimeEnv from '@mars/heroku-js-runtime-env'
 import {
   Alert,
   Card,
@@ -20,11 +19,9 @@ export default class CountryData extends Component {
   }
 
   fetchCountry() {
-    const env = runtimeEnv();
-
     if (this.state.name === null) return;
 
-    fetch(`${env.REACT_APP_API_ENDPOINT}/countries/getByName?name=${this.state.name}`)
+    fetch(`/api/countries/getByName?name=${this.state.name}`)
       .then(res => res.json())
       .then(data => this.setState({ data }))
       .catch(err => {
