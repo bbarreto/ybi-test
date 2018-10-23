@@ -22,6 +22,11 @@ export default class Countries extends Component {
       .then(allCountries => this.setState({ allCountries }))
       .catch(err => {
         console.error(err)
+        this.setState({
+          allCountries: {
+            error: 'Error while fetching countries. Try again later.'
+          }
+        })
       })
   }
 
@@ -38,9 +43,12 @@ export default class Countries extends Component {
 
     if (this.state.allCountries.hasOwnProperty('error')) {
       return (
-        <Alert color="danger">
-          {this.state.allCountries.error}
-        </Alert>
+        <div>
+          <h1 className="mb-3">Countries</h1>
+          <Alert color="danger">
+            {this.state.allCountries.error}
+          </Alert>
+        </div>
       )
     }
 
