@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
-import { Alert } from 'reactstrap';
-import Select from 'react-select';
+import React, { Component } from 'react'
+import { Alert } from 'reactstrap'
+import Select from 'react-select'
 import CountryData from './CountryData'
+import runtimeEnv from '@mars/heroku-js-runtime-env'
 
 export default class Countries extends Component {
   constructor(props) {
@@ -17,12 +18,13 @@ export default class Countries extends Component {
   }
 
   componentDidMount() {
-      fetch(`http://localhost:5000/api/countries/getAll`)
-        .then(res => res.json())
-        .then(allCountries => this.setState({ allCountries }))
-        .catch(err => {
-          console.error(err)
-        })
+    const env = runtimeEnv();
+    fetch(`${env.REACT_APP_API_ENDPOINT}/countries/getAll`)
+      .then(res => res.json())
+      .then(allCountries => this.setState({ allCountries }))
+      .catch(err => {
+        console.error(err)
+      })
   }
 
   handleChange = (selectedOption) => {
