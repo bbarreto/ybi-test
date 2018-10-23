@@ -31,7 +31,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Navbar color="light" light expand="md">
+        <Navbar color="dark" dark expand="md">
           <NavbarBrand tag={Link} to="/">YBI!Test</NavbarBrand>
           <NavbarToggler onClick={this.toggleMenu} />
           <Collapse isOpen={this.state.menuIsOpen} navbar>
