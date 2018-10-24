@@ -1,10 +1,5 @@
 import React, { Component } from 'react'
 
-import apple from './images/reel/apple.png'
-import banana from './images/reel/banana.png'
-import cherry from './images/reel/cherry.png'
-import lemon from './images/reel/lemon.png'
-
 export default class SlotReel extends Component {
   constructor(props) {
     super(props);
