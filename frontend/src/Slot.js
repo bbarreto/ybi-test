@@ -13,6 +13,7 @@ export default class Slot extends Component {
     };
 
     this.updateBalance = this.updateBalance.bind(this)
+    this.buyCredits = this.buyCredits.bind(this)
     this.spin = this.spin.bind(this)
   }
 
@@ -31,12 +32,27 @@ export default class Slot extends Component {
     if (!this.state.walletId) return false
     fetch(`http://localhost:5000/api/slot/balance?wallet=${this.state.walletId}`)
       .then(res => res.json())
-      .then(balance => this.setState({ balance }))
+      .then(balance => this.setState(balance))
       .catch(err => {
         console.error(err)
         this.setState({
           walletId: {
             error: 'Error while creating your account. Try again later.'
+          }
+        })
+      })
+  }
+
+  buyCredits() {
+    if (!this.state.walletId) return false
+    fetch(`http://localhost:5000/api/slot/addCredits?wallet=${this.state.walletId}`)
+      .then(res => res.json())
+      .then(balance => this.setState(balance))
+      .catch(err => {
+        console.error(err)
+        this.setState({
+          walletId: {
+            error: 'Error while buying credits. Try again later.'
           }
         })
       })
@@ -83,6 +99,10 @@ export default class Slot extends Component {
               </li>
               :''}
             </ul>
+
+            <button onClick={this.buyCredits} type="button" className="btn btn-block btn-large btn-primary mt-3">
+              Buy €20 credits
+            </button>
           </div>
           <div className="col-md-8">
             <div className="row mb-3">

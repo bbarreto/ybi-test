@@ -32,7 +32,10 @@ router.get('/start', (req, res) => {
   let sessionId = randomstring.generate()
 
   // Create wallet that expires in 1 hour
-  redisClient.set("wallet_"+sessionId, 20)
+  redisClient.set("wallet_"+sessionId, JSON.stringify({
+    balance: 20,
+    bought: 20
+  }))
     .then(success => {
       return res.status(200).send({
         sessionId
@@ -63,6 +66,40 @@ router.get('/balance', (req, res) => {
     })
 })
 
+router.get('/addCredits', (req, res) => {
+  if (!req.query.wallet) {
+    return res.status(400).send({
+      error: 'Please, inform wallet'
+    })
+  }
+
+  redisClient.get("wallet_"+req.query.wallet)
+    .then(data => {
+      data = JSON.parse(data)
+
+      let newData = JSON.stringify({
+        balance: data.balance + 20,
+        bought: data.bought + 20
+      })
+
+      redisClient.set("wallet_"+req.query.wallet, newData)
+        .then(ok => {
+          return res.status(200).send(newData)
+        })
+        .catch(err => {
+          return res.status(500).send({
+            error: 'Error while buying credits. Try again.'
+          })
+        })
+
+    })
+    .catch(err => {
+      return res.status(500).send({
+        error: err.message
+      })
+    })
+})
+
 router.get('/spin', async (req, res) => {
   if (!req.query.wallet) {
     return res.status(400).send({
@@ -71,7 +108,10 @@ router.get('/spin', async (req, res) => {
   }
 
   // Get balance from database
-  let balance = await redisClient.get("wallet_"+req.query.wallet)
+  let data = await redisClient.get("wallet_"+req.query.wallet)
+  data = JSON.parse(data)
+
+  let {balance, bought} = data
 
   // Return message if user has no balance
   if (balance < 1) {
@@ -149,7 +189,10 @@ router.get('/spin', async (req, res) => {
   balance = parseInt(balance) + prize - 1
 
   // Save balance to database
-  redisClient.set("wallet_"+req.query.wallet, balance)
+  redisClient.set("wallet_"+req.query.wallet, JSON.stringify({
+    balance,
+    bought
+  }))
     .then(success => {
       // Return result to user
       return res.status(200).send({
