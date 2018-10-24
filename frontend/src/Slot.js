@@ -19,7 +19,7 @@ export default class Slot extends Component {
 
   spin() {
     if (!this.state.walletId) return false
-    fetch(`http://localhost:5000/api/slot/spin?wallet=${this.state.walletId}`)
+    fetch(`/api/slot/spin?wallet=${this.state.walletId}`)
       .then(res => res.json())
       .then(data => this.setState(data))
       .catch(err => {
@@ -30,7 +30,7 @@ export default class Slot extends Component {
 
   updateBalance() {
     if (!this.state.walletId) return false
-    fetch(`http://localhost:5000/api/slot/balance?wallet=${this.state.walletId}`)
+    fetch(`/api/slot/balance?wallet=${this.state.walletId}`)
       .then(res => res.json())
       .then(balance => this.setState(balance))
       .catch(err => {
@@ -45,7 +45,7 @@ export default class Slot extends Component {
 
   buyCredits() {
     if (!this.state.walletId) return false
-    fetch(`http://localhost:5000/api/slot/addCredits?wallet=${this.state.walletId}`)
+    fetch(`/api/slot/addCredits?wallet=${this.state.walletId}`)
       .then(res => res.json())
       .then(balance => this.setState(balance))
       .catch(err => {
@@ -61,7 +61,7 @@ export default class Slot extends Component {
   componentDidMount() {
     // "Authenticate" a wallet to get credits to play
     if (!this.state.walletId) {
-      fetch(`http://localhost:5000/api/slot/start`)
+      fetch(`/api/slot/start`)
         .then(res => res.json())
         .then(data => {
           this.setState({ walletId: data.sessionId })

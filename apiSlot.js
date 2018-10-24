@@ -129,60 +129,70 @@ router.get('/spin', async (req, res) => {
   ]
 
   let round = []
-  let prize = 0
+  let prize = null
 
-  // Pick one item for each reel
-  reels.forEach((reel, k) => {
-    round.push(reels[k][Math.floor(Math.random() * 8)]);
-  })
+  while (prize === null) {
+    // Pick one item for each reel
+    reels.forEach((reel, k) => {
+      round.push(reels[k][Math.floor(Math.random() * 8)]);
+    })
 
-  // Determine prizes
-  if (
-    // 3 cherries in a row: won 50 coins
-    round[0] === 'cherry' &&
-    round[1] === 'cherry' &&
-    round[2] === 'cherry'
-  ) {
-    prize = 50
-  } else if (
-    // 2 cherries in a row: won 40 coins
-    round[0] === 'cherry' && round[1] === 'cherry' ||
-    round[1] === 'cherry' && round[2] === 'cherry'
-  ) {
-    prize = 40
-  } else if (
-    // 3 Apples in a row: won 20 coins
-    round[0] === 'apple' &&
-    round[1] === 'apple' &&
-    round[2] === 'apple'
-  ) {
-    prize = 20
-  } else if (
-    // 2 Apples in a row: won 10 coins
-    round[0] === 'apple' && round[1] === 'apple' ||
-    round[1] === 'apple' && round[2] === 'apple'
-  ) {
-    prize = 10
-  } else if (
-    // 3 Bananas in a row: won 15 coins
-    round[0] === 'banana' &&
-    round[1] === 'banana' &&
-    round[2] === 'banana'
-  ) {
-    prize = 15
-  } else if (
-    // 2 Bananas in a row: won 5 coins
-    round[0] === 'banana' && round[1] === 'banana' ||
-    round[1] === 'banana' && round[2] === 'banana'
-  ) {
-    prize = 5
-  } else if (
-    // 3 lemons in a row: won 3 coins
-    round[0] === 'lemon' &&
-    round[1] === 'lemon' &&
-    round[2] === 'lemon'
-  ) {
-    prize = 3
+    // Determine prizes
+    if (
+      // 3 cherries in a row: won 50 coins
+      round[0] === 'cherry' &&
+      round[1] === 'cherry' &&
+      round[2] === 'cherry'
+    ) {
+      prize = 50
+    } else if (
+      // 2 cherries in a row: won 40 coins
+      round[0] === 'cherry' && round[1] === 'cherry' ||
+      round[1] === 'cherry' && round[2] === 'cherry'
+    ) {
+      prize = 40
+    } else if (
+      // 3 Apples in a row: won 20 coins
+      round[0] === 'apple' &&
+      round[1] === 'apple' &&
+      round[2] === 'apple'
+    ) {
+      prize = 20
+    } else if (
+      // 2 Apples in a row: won 10 coins
+      round[0] === 'apple' && round[1] === 'apple' ||
+      round[1] === 'apple' && round[2] === 'apple'
+    ) {
+      prize = 10
+    } else if (
+      // 3 Bananas in a row: won 15 coins
+      round[0] === 'banana' &&
+      round[1] === 'banana' &&
+      round[2] === 'banana'
+    ) {
+      prize = 15
+    } else if (
+      // 2 Bananas in a row: won 5 coins
+      round[0] === 'banana' && round[1] === 'banana' ||
+      round[1] === 'banana' && round[2] === 'banana'
+    ) {
+      prize = 5
+    } else if (
+      // 3 lemons in a row: won 3 coins
+      round[0] === 'lemon' &&
+      round[1] === 'lemon' &&
+      round[2] === 'lemon'
+    ) {
+      prize = 3
+    } else {
+      prize = 0
+    }
+
+    // This calculation is just to control money balance, to not win too easy
+    if (prize!==0 && ((balance+prize)/bought)-1 > 0.95) {
+      prize = null
+      round = []
+    }
   }
 
   // Calculate new balance
